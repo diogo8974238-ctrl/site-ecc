@@ -3,7 +3,7 @@ import { HttpError } from '../errors/http-error'
 import { createHonoSupabaseCilent } from '../lib/supabase'
 import { updateProfileName } from '../repositories/user.repository'
 import { authenticateWithPassword, requestPasswordReset, terminateSession } from '../services/auth.service'
-import  { reaJsonBody } from '../utils/request'
+import  { readJsonBody } from '../utils/request'
 
 export async function postLogin(c: Contex) {// Cria a exporta a função resonsável opelo login
     try {

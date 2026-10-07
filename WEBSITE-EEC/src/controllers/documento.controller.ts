@@ -171,11 +171,24 @@ export async function uploadFinalizarHandler(c: Context) {
     const client = createHonoSupabaseCilent(c)
 
     const body = await c.req.json().catch(() => null)
-    const parseResult = uploadIntentSchema.safeParse(body)
+    const parseResult = uploadFinalizarSchema.safeParse(body)
     if (!parseResult.success) {
         const errorMsg = parseResult.error.issues.map((i: { message: string }) => i.message).join(', ')
         throw new HttpError(400, `Dados de intent de upload inválidos: ${errorMsg}`)
     }
+     
+    const doc = await finalizeDirectUploadDocumento(parseResult.data,user, client)
+    return c.json({ success: true, data:  doc }, 201)
+}
+
+export async function directUploadLocalHandler(c: Context) {
+    const path = c.req.query('path') || ''
+    const expires = c.req.query('expires') || ''
+    const sig = c.req.query('sig') || ''
+
+    if (!path || !expires || !sig) {
+        throw new HttpError(400, 'Parâmetros de assinatura incompletos.')
+}
 }
 
                           
